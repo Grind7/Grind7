@@ -1,0 +1,146 @@
+#include<bits/stdc++.h> 
+using namespace std;
+struct data
+{
+	int bh;
+	int yip;
+	int mip;
+	int xy;
+	int yd;
+	int md;
+};
+data gz[110000];
+struct pac
+{
+	int yip;
+	int mip;
+	int yd;
+	int md;
+	int xy;
+};
+pac sj[110000];
+bool cmp(data qq,data ww)
+{
+	if(qq.yip!=ww.yip) return qq.yip<ww.yip;
+	else
+	{
+		if(qq.mip!=ww.mip) return qq.mip<ww.mip;
+		else
+		{
+			if(qq.xy!=ww.xy) return qq.xy<ww.xy;
+		}
+	}
+}
+int stoi1(string x)
+{
+	int q;
+	stringstream ss;
+	ss<<x;
+	ss>>q;
+	return q; 
+} 
+int main()
+{
+	//freopen
+	int cnt1=0,cnt2=0;
+	bool f=0;
+	string a,b,c,d,e;
+	while(cin>>a>>b>>c>>d>>e)
+	{
+		if(a[0]==EOF) break;
+		for(int i=0;i<a.size();i++)
+		{
+			if(a[i]=='.') 
+			{
+			f=1; //打个标记 现在已经读到规则集了 
+			break; 
+			} 
+		}
+		if(f)
+		{
+			string yi="";
+			string now1="";
+			for(int i=1;i<a.size();i++)
+			{
+				if(a[i]=='.')
+				{
+					char aa[110];
+			        int x=stoi1(now1);
+			        itoa(x,aa,2);
+			        for(int j=1;j<=8-strlen(aa);j++) yi+="0";
+			        yi+=aa;
+					now1="";
+					continue;
+				}
+			    if(a[i]=='/') break;
+				now1+=a[i];    
+			}
+			string mi="";
+			now1="";
+			for(int i=1;i<b.size();i++)
+			{
+				if(b[i]=='.')
+				{
+					char aa[110];
+			        int x=stoi1(now1);
+			        itoa(x,aa,2);
+			        for(int j=1;j<=8-strlen(aa);j++) yi+="0";
+			        yi+=aa;
+					now1="";
+					continue;
+				}
+			    if(b[i]=='/') break;
+				now1+=b[i];    
+			}
+			gz[cnt2].bh=cnt2;
+			gz[cnt2].yip=stoi1(yi);
+			gz[cnt2].yip=stoi1(mi);
+		}
+		else
+		{
+			cnt1++;
+			sj[cnt1].yip=stoi1(a);
+			sj[cnt1].mip=stoi1(b);
+			sj[cnt1].yd=stoi1(c);
+			sj[cnt1].md=stoi1(d);
+			sj[cnt1].xy=stoi1(e);	
+		}
+	}
+	int cnt=0;
+	sort(gz,gz+cnt2,cmp);
+	for(int i=1;i<=cnt1;i++)
+	{
+		int l=0,r=cnt2-1,mid;
+		int ans=-1e9;
+	    while(l<=r)
+	    {
+	    	mid=(l+r)>>1;
+	    	if(gz[mid].mip>=sj[i].mip) r=mid;
+	    	else l=mid;
+		}
+		l=0;r=cnt2-1;
+		ans=max(ans,mid);
+		while(l<=r)
+		{
+			mid=(l+r)>>1;
+			if(gz[mid].yip>=sj[i].yip) r=mid;
+			else l=mid;
+		}
+		ans=max(ans,mid);
+		l=0;r=cnt2-1;
+		while(l<=r)
+		{
+			mid=(l+r)>>1;
+			if(gz[mid].xy>=sj[i].xy) r=mid;
+			else l=mid;
+		}
+		for(int j=ans;j<=cnt2;j++)
+		{
+			if(gz[j].yd<=sj[i].md&&gz[j].yd>=sj[i].md)
+			{
+				cout<<gz[j].bh<<endl;
+			}
+		}
+	}
+	return 0;
+}
